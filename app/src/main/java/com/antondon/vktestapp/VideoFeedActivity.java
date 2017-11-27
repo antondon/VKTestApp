@@ -68,7 +68,6 @@ public class VideoFeedActivity extends AppCompatActivity {
         recyclerViewFeed.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-//                Log.d(TAG, "onLoadMore: page " + page + ", totalItemsCount: " + totalItemsCount);
                 requestVideos();
             }
         });
@@ -90,7 +89,7 @@ public class VideoFeedActivity extends AppCompatActivity {
     }
 
     void requestVideos() {
-        VKRequest feedVideoRequest = getFeedVideoRequest();
+        VKRequest feedVideoRequest = getVideoFeedRequest();
         feedVideoRequest.executeWithListener(new VKRequest.VKRequestListener() {
             @Override
             public void onComplete(VKResponse response) {
@@ -118,7 +117,7 @@ public class VideoFeedActivity extends AppCompatActivity {
         });
     }
 
-    VKRequest getFeedVideoRequest(){
+    VKRequest getVideoFeedRequest(){
         String newsFeedCode = newsFeedStartFrom.isEmpty() ?
                 "var newsfeed = API.newsfeed.get({\"filters\" : \"post\"});\n" :
                 "var newsfeed = API.newsfeed.get({\"filters\" : \"post\", \"start_from\" : \"" + newsFeedStartFrom + "\"});\n";
@@ -140,7 +139,7 @@ public class VideoFeedActivity extends AppCompatActivity {
                     "j = 0;\n" +
                     "i = i + 1;\n" +
                 "}\n" +
-                "var videos = API.video.get({\"videos\" : videoIds});\n" + // + "\"offset\" : " + String.valueOf(offset) + "});" +
+                "var videos = API.video.get({\"videos\" : videoIds});\n" +
                 "return [videos, newsfeed.next_from];";
         return new VKRequest("execute", VKParameters.from("code", code));
     }

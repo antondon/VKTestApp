@@ -72,6 +72,5 @@ public class VideoPlayerActivity extends Activity {
         };
         webView.setWebChromeClient(webChromeClient);
         webView.loadUrl(video.player);
-        //webView.loadUrl("https://www.youtube.com/embed/dCFUZ43IL5w?__ref=vk.api");
         }
 }
