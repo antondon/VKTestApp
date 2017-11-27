@@ -98,11 +98,12 @@ public class VideoFeedActivity extends AppCompatActivity {
                     JSONArray videosJsonArray = responseJsonArray.getJSONObject(0).getJSONArray("items");
                     newsFeedStartFrom = responseJsonArray.getString(1);
                     int previousNum = videos.size();
-                    for (int i = 0; i < videosJsonArray.length(); i++) {
-                        videos.add(new VKApiVideo(videosJsonArray.getJSONObject(i)));
-                    }
-                    if (videos.size() != previousNum) {
-                        adapter.notifyDataSetChanged();
+                    int newNum = videosJsonArray.length();
+                    if (newNum > 0) {
+                        for (int i = 0; i < videosJsonArray.length(); i++) {
+                            videos.add(new VKApiVideo(videosJsonArray.getJSONObject(i)));
+                        }
+                        adapter.notifyItemRangeInserted(previousNum, newNum);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

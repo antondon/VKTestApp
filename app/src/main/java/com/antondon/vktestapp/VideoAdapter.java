@@ -41,7 +41,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
 
         @Override
         public void onClick(View v) {
-            listener.onClick(v, getAdapterPosition());
+            if (listener != null) {
+                listener.onClick(v, getAdapterPosition());
+            }
         }
     }
 
@@ -74,8 +76,17 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
         String formattedDuration = String.format(Locale.ENGLISH,"%02d:%02d",
         (video.duration / 60) % 60, video.duration % 60);
         holder.textViewTime.setText(formattedDuration);
-        String photoUrl = video.photo_640.isEmpty() ? video.photo_320 : video.photo_640;
-        Picasso.with(context).load(photoUrl).fit().into(holder.imageViewPhoto);
+        String photoUrl = "";
+        if (!video.photo_640.isEmpty()) {
+            photoUrl = video.photo_640;
+        } else if (!video.photo_320.isEmpty()) {
+            photoUrl = video.photo_320;
+        } else if (!video.photo_130.isEmpty()) {
+            photoUrl = video.photo_130;
+        }
+        if (!photoUrl.isEmpty()) {
+            Picasso.with(context).load(photoUrl).fit().into(holder.imageViewPhoto);
+        }
     }
 
     @Override

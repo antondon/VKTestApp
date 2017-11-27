@@ -2,7 +2,6 @@ package com.antondon.vktestapp;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -28,6 +27,13 @@ public class VideoPlayerActivity extends Activity {
         Intent launchIntent = getIntent();
         VKApiVideo video = launchIntent.getParcelableExtra("video");
 
+        if (video != null && video.player != null && !video.player.isEmpty()) {
+            initPlayerWebView();
+            webView.loadUrl(video.player);
+        }
+    }
+
+    void initPlayerWebView() {
         fullscreenContainer = findViewById(R.id.fullscreen_container);
         webView = findViewById(R.id.web_view);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -57,20 +63,7 @@ public class VideoPlayerActivity extends Activity {
                 fullscreenContainer.setVisibility(View.GONE);
                 webView.setVisibility(View.VISIBLE);
             }
-
-            @Override
-            public Bitmap getDefaultVideoPoster() {
-                return super.getDefaultVideoPoster();
-            }
-
-            @Override
-            public View getVideoLoadingProgressView() {
-                return super.getVideoLoadingProgressView();
-            }
-
-
         };
         webView.setWebChromeClient(webChromeClient);
-        webView.loadUrl(video.player);
-        }
+    }
 }
